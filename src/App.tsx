@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import type { Variants, Transition } from "framer-motion";
 import { Github, Linkedin, Mail, Phone, ArrowUpRight, Download, Sparkles, Briefcase, GraduationCap } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,7 +16,7 @@ const PROFILE = {
   github: "https://github.com/andriaBegiashvili",
   linkedin: "https://linkedin.com/in/andria-begiashvili",
   resume: "/andria-begiashvili-resume.pdf",
-  location: "Tbilisi, Georgia"
+  location: "Tbilisi, Georgia",
 };
 
 const SKILLS = [
@@ -26,7 +27,7 @@ const SKILLS = [
 
 const EXPERIENCE = [
   {
-    role: "Full‑Stack Engineer",
+    role: "Full-Stack Engineer",
     company: "Touch Support, Inc. & SNF Back Office",
     period: "Aug 2024 – Present",
     points: [
@@ -42,7 +43,7 @@ const EXPERIENCE = [
     company: "IOT Rocket GmbH",
     period: "Sep 2024 – Present",
     points: [
-      "Real‑time IoT dashboards (Angular + Tailwind).",
+      "Real-time IoT dashboards (Angular + Tailwind).",
       "Backends with NestJS; documented via Swagger.",
       "Optimized MongoDB telemetry queries.",
       "Design system via Storybook + Chromatic.",
@@ -54,32 +55,42 @@ const EXPERIENCE = [
     company: "JSC OPPA",
     period: "Jan 2022 – Aug 2024",
     points: [
-      "Large‑scale fintech with Angular + NGRX.",
+      "Large-scale fintech with Angular + NGRX.",
       "Internal tools in React integrated with backend services.",
-      "Real‑time sync with PostgreSQL & MongoDB.",
-      "Bundle size −30% using lazy loading and code‑split.",
+      "Real-time sync with PostgreSQL & MongoDB.",
+      "Bundle size −30% using lazy loading and code-split.",
       "Quality gates with Jest coverage reports."
     ]
   }
 ];
 
 const PROJECTS = [
-  { title: "Energo Pro", stack: "Angular · Java · Docker", desc: "Utility management dashboard with role‑based access and secure pipelines.", href: "#" },
-  { title: "Asterbit.io", stack: "Next.js · SEO‑first", desc: "Company website with buttery animations and 95+ Lighthouse.", href: "#" },
-  { title: "IoT‑Suite", stack: "React · Express · MongoDB", desc: "Real‑time device visualization with admin tools & alerts.", href: "#" },
+  { title: "Energo Pro", stack: "Angular · Java · Docker", desc: "Utility management dashboard with role-based access and secure pipelines.", href: "#" },
+  { title: "Asterbit.io", stack: "Next.js · SEO-first", desc: "Company website with buttery animations and 95+ Lighthouse.", href: "#" },
+  { title: "IoT-Suite", stack: "React · Express · MongoDB", desc: "Real-time device visualization with admin tools & alerts.", href: "#" },
   { title: "PayBox GE", stack: "Angular · PHP · PostgreSQL", desc: "Payment terminal network platform serving 350,000+ daily customers across 8,000+ payment points in Georgia.", href: "https://paybox.ge" }
 ];
 
 // ---------------------
 // UTILS
 // ---------------------
-const container = {
+const container: Variants = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.06 } },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.06 },
+  },
 };
-const item = {
+
+const itemTransition: Transition = {
+  type: "spring",
+  stiffness: 60,
+  damping: 12,
+};
+
+const item: Variants = {
   hidden: { opacity: 0, y: 10 },
-  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 60, damping: 12 } },
+  show: { opacity: 1, y: 0, transition: itemTransition },
 };
 
 function SectionTitle({ icon: Icon, children }: { icon: any; children: React.ReactNode }) {
@@ -102,20 +113,16 @@ export default function App() {
   return (
     <div className="relative min-h-screen overflow-x-clip bg-slate-950 text-white">
       {/* Add CSS for scrolling animation */}
-      <style jsx>{`
+      <style>{`
         @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
         .animate-scroll {
           animation: scroll 25s linear infinite;
         }
       `}</style>
-      
+
       {/* Decorative background */}
       <GradientBackdrop />
 
@@ -145,8 +152,12 @@ export default function App() {
       {/* HERO */}
       <header className="relative mx-auto max-w-6xl px-4 pb-16 pt-14 sm:pt-20">
         <div className="text-center">
-          <motion.h1 initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-            className="text-4xl font-black leading-tight sm:text-6xl">
+          <motion.h1
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl font-black leading-tight sm:text-6xl"
+          >
             <span className="bg-gradient-to-br from-fuchsia-400 via-cyan-300 to-emerald-300 bg-clip-text text-transparent">
               {PROFILE.name}
             </span>
@@ -174,7 +185,8 @@ export default function App() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="mt-8 mx-auto max-w-5xl overflow-hidden rounded-xl border border-white/10 bg-slate-900/40 p-4 shadow-soft">
+            className="mt-8 mx-auto max-w-5xl overflow-hidden rounded-xl border border-white/10 bg-slate-900/40 p-4 shadow-soft"
+          >
             <div className="flex animate-[scroll_25s_linear_infinite] gap-4 whitespace-nowrap will-change-transform">
               {[...SKILLS, ...SKILLS, ...SKILLS].map((s, i) => (
                 <Badge key={i} className="bg-gradient-to-r from-fuchsia-600/80 to-cyan-600/80 text-white px-3 py-1.5 text-sm flex-shrink-0">
@@ -191,7 +203,13 @@ export default function App() {
         <SectionTitle icon={Briefcase}>Professional Experience</SectionTitle>
         <div className="grid gap-8">
           {EXPERIENCE.map((job, index) => (
-            <motion.div key={job.role} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }}>
+            <motion.div
+              key={job.role}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+            >
               <Card className="rounded-2xl border-white/10 bg-gradient-to-br from-slate-900/90 to-slate-800/80 shadow-2xl">
                 <CardContent className="p-8">
                   <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
@@ -278,8 +296,13 @@ export default function App() {
       {/* PROJECTS - COMPACT */}
       <section id="projects" className="mx-auto max-w-6xl px-4 py-14">
         <SectionTitle icon={Sparkles}>Selected Projects</SectionTitle>
-        <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true }}
-          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+        >
           {PROJECTS.map((p) => (
             <motion.div key={p.title} variants={item}>
               <Card className="group relative overflow-hidden rounded-xl border-white/10 bg-slate-900/70 hover:bg-slate-900/90 transition-all">
@@ -356,4 +379,4 @@ function GradientBackdrop() {
       />
     </div>
   );
-}''
+}
